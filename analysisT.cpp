@@ -78,7 +78,7 @@ void analysisT::training(DSString fileName) {
     for(pair<DSString,pair<int, int>> itr : sentCount) {
         int total = itr.second.first+itr.second.second;
         //5-50 of times a apperitence a word to then use
-        if(total > 13) {
+        if(total > 6) {
             //probability of a work being positive based on appertiances
             double prob = (double)itr.second.first/total;
             //we can mess with proability as well - percentage of it being postive
@@ -156,13 +156,7 @@ void analysisT::testing(DSString fileName) {
             token = strtok(nullptr,"!,@#$%^&*()_+/-|{}[];:\"'?~.<> 1234567890\\");
         }
 
-        // if (netural > 0) {
-        //     sentValueS[id] = true;
-        // } else {
-        //     sentValueS[id] = false;
-        // }
-        //saying its true
-        sentValueS[id] = netural > 0;
+        sentValueS[id] = netural >= 0;
     }
 
 }
