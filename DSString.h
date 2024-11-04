@@ -9,13 +9,16 @@
 #define DSSTRING_H
 
 #include <iostream>
+#include <cstring>
 
 class DSString
 {
 
 private:
-    char *data; // a pointer to a character array containing the string with a `\0` terminator
-    size_t len; // the length of the string (without the terminator)
+ //a pointer that points to a character array with a '\0' terminator
+    char *data;
+ //length of the string
+    size_t len;
     // Note: we keep the terminator only so we can return a c-string version in function c_str().
 
 public:
@@ -25,31 +28,34 @@ public:
      **/
 
     DSString();
-    DSString(const char *); // constructor that converts a cstring
-    // you can also provide  DSString(const std::string &); for std::string
+ //constructor that takes an inputted char and declares our own string
+    DSString(const char *);
 
-    // Rule of three is needed if dynamic memory allocation is used
-    DSString(const DSString &);            // copy constructor
-    DSString &operator=(const DSString &); // copy assignment operator
-    ~DSString();                           // destructor
+    // Rule of three: copy constructor, copy assignment, and destructor (to delete the allocated memory)
+ //shallow copy is default while deep copy copies entire
+    DSString(const DSString &);         //constructor
+    DSString &operator=(const DSString &);  //copy assignment
+    ~DSString();      //destructor
 
-    // you can also implement the move versions for the big 5 (C+11)
+    //returns length of the string
+    size_t length() const;
 
-    size_t length() const; // returns the length of the string
-
-    char &operator[](size_t); // returns a reference to the character at the given index
+    //returns a reference to character at index
+    char &operator[](size_t);
 
     /**
      * Overloaded operator+ which appends the string in the argument to this string
      */
+   //combining the two strings, one being from the argument
     DSString operator+(const DSString &) const;
 
     /**
      * Standard relational operators to compare and order your strings.
      * Feel free to add more.
      **/
-    bool operator==(const DSString &) const;
-    bool operator<(const DSString &) const;
+ //
+    bool operator==(const DSString &) const; //*making the two strings equal and passing the equaled value
+    bool operator<(const DSString &) const; //*alphabetical organized
 
     /**
      * The substring method returns a new string object that contains a
@@ -61,6 +67,8 @@ public:
      * @return a DSString object containing the requested substring
      **/
     DSString substring(size_t start, size_t numChars) const;
+ //*first parameter, the start index of the string you wanna remove from main string (substring)
+ //*and second is the length of the substring returned
 
     /**
      * @brief Returns a new string object with all characters in lowercase
@@ -68,13 +76,14 @@ public:
      * @return DSString
      */
     DSString toLower() const; // look at the ASCII table for this!
+  //*lowercase
 
     /**
      * the c_str function returns a pointer a null-terminated c-string holding the
      * contents of this object. Since data already has a `\0`
      * at the end of the string in DSString so you can just return a pointer to data.
      **/
-    const char *c_str() const;
+    const char *c_str() const; //*returning data ex. string is a array of char AKA c-string
 
     // a conversion to std::string would also be nice to have: string string() const;
 
@@ -84,7 +93,8 @@ public:
      * This operator needs to be implemented outside of the class (and outside the class
      * namespace) as a friend because it operates on the stream and not the DSString object.
      **/
-    friend std::ostream &operator<<(std::ostream &, const DSString &);
+ //*friends passes through the ostream and string and lets us use the cout operator now
+    friend std::ostream &operator<<(std::ostream &, const DSString &);  //*cout a string or outputting to a file
 
     // You are free to add more functionality to the class.  For example,
     // you may want to add a find(...) function that will search for a
