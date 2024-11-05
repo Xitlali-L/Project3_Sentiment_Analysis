@@ -1,14 +1,5 @@
 #include "DSString.h"
 
-/* 
- * Implement the functions defined in DSString.h. You may add more functions as needed
- * for the project. 
- *
- * Note that c-strings don's store an explicit length but use `\0` as the terminator symbol
- * but your class should store its length in a member variable. 
- * DDO NOT USE C-STRING FUNCTIONS <string.h> or <cstring>.
- */
-
 
 DSString::DSString() {
     //only element in the string is the null terminator aka saying it's an empty string
@@ -26,7 +17,7 @@ DSString::DSString(const char *str) {
     }
 }
 
-//creating a copy in a seperate memory location
+//creating a copy in a separate memory location
 DSString::DSString(const DSString &str) {
     len = str.len;
     data = new char[len + 1];
@@ -35,7 +26,7 @@ DSString::DSString(const DSString &str) {
         data[i] = str.data[i];
     }
 }
-
+//overriding the past previous data with new value
 DSString & DSString::operator=(const DSString &str) {
     delete[] data;
 
@@ -49,18 +40,22 @@ DSString & DSString::operator=(const DSString &str) {
     return *this;
 }
 
+
 DSString::~DSString() {
     delete[] data;
 }
 
+//returning the length
 size_t DSString::length() const {
     return len;
 }
 
+//returns index
 char & DSString::operator[](size_t i) {
     return data[i];
 }
 
+//concatenating two DSStrings
 DSString DSString::operator+(const DSString &str) const {
     char* newstr = new char[len + str.len + 1];
     newstr[len + str.len] = '\0';
@@ -75,6 +70,7 @@ DSString DSString::operator+(const DSString &str) const {
     return final;
 }
 
+//checking if the DSStrings are the same
 bool DSString::operator==(const DSString &str) const {
     if (len != str.len) {
         return false;
@@ -88,6 +84,7 @@ bool DSString::operator==(const DSString &str) const {
     return true;
 }
 
+//alphabetizing
 bool DSString::operator<(const DSString &str) const {
     int i = 0;
 
@@ -121,6 +118,7 @@ DSString DSString::substring(size_t start, size_t numChars) const {
     return final;
 }
 
+//turn them all lowercase
 DSString DSString::toLower() const {
     char* newstr = new char[len + 1];
     newstr[len] = '\0';
@@ -140,7 +138,7 @@ const char * DSString::c_str() const {
     return data;
 }
 
-
+//lets us use cout and ofstream on DSString
 std::ostream & operator<<(std::ostream &out, const DSString &str) {
     out << str.data;
     return out;

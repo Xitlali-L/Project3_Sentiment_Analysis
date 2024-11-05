@@ -5,7 +5,7 @@
 #include "analysisT.h"
 
 #include <set>
-
+//training function
 void analysisT::training(DSString fileName) {
     ifstream input (fileName.c_str());
 
@@ -93,11 +93,7 @@ void analysisT::training(DSString fileName) {
 }
 
 
-
-
-
-
-
+//testing function
 void analysisT::testing(DSString fileName) {
     ifstream input (fileName.c_str());
 
@@ -119,7 +115,7 @@ void analysisT::testing(DSString fileName) {
         if (strlen(buffer) == 0) {
             break;
         }
-        //sotring id
+        //sorting id
         DSString id = buffer;
 
         //discarding unneeded columns
@@ -132,7 +128,8 @@ void analysisT::testing(DSString fileName) {
 
         //our delimiters by using special characters
         char* token = strtok(buffer,"!,@#$%^&*()_+/-|{}[];:\"'?~.<> 1234567890\\");
-        //loops through the words until there are no words left
+
+        //
         int netural = 0;
 
         while(token != nullptr) {
@@ -144,7 +141,7 @@ void analysisT::testing(DSString fileName) {
                 //if word has been seen before
                 if(sentValueW.find(word) != sentValueW.end()) {
                     if(sentValueW[word] == true) {
-                        //adds the count if its postive
+                        //adds the count if its positive
                         netural++;
                     }
                     else {
@@ -155,12 +152,14 @@ void analysisT::testing(DSString fileName) {
             }
             token = strtok(nullptr,"!,@#$%^&*()_+/-|{}[];:\"'?~.<> 1234567890\\");
         }
-
+        //if the sentiment of the word is equal to zero it turns positive
         sentValueS[id] = netural >= 0;
     }
 
 }
 
+
+//function for validation or accuracy
 void analysisT::validation(DSString fileName0, DSString fileName1, DSString fileName2) {
     ifstream input (fileName0.c_str());
 
@@ -194,6 +193,7 @@ void analysisT::validation(DSString fileName0, DSString fileName1, DSString file
 
     ofstream output0(fileName1.c_str());
     for(pair<DSString, bool> itr : sentValueS) {
+        //outputs the correct answers, order as: if positive -> negative and vise versa
         if(itr.second) {
             output0 << "4," << itr.first << "\n";
         }
@@ -207,6 +207,7 @@ void analysisT::validation(DSString fileName0, DSString fileName1, DSString file
     //accuracy is 1 - (what we got wrong/what we go right); to get what we go right
     double accuracy = 1 - ((double)(iDofWrong.size())/(sentValueS.size()));
 
+    //setting precision to 3 for decimal
     output1 << setprecision(3) << accuracy << endl;
     for(int i = 0; i < iDofWrong.size(); i++) {
         if(sentValueS[iDofWrong[i]]) {
